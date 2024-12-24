@@ -42,7 +42,7 @@
                         @if(auth()->check())
                         @if(!auth()->user()->is_admin)
                         <li class="nav-item">
-                            <a class="nav-link" href="userProducts" > Product</a>
+                            <a class="nav-link" href="userProducts" >Product</a>
                         </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="myCart">My Cart</a>
@@ -52,7 +52,7 @@
                             </li>                            
                         @else
                         <li class="nav-item">
-                            <a class="nav-link" href="products" > Product</a>
+                            <a class="nav-link" href="products" >Add Product</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.orders') }}">Manage Orders</a>
