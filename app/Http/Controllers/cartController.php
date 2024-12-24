@@ -67,8 +67,7 @@ public function placeOrder()
             'price' => $cartItem->product->productPrice,
         ]);
 
-        // 更新库存
-        $cartItem->product->decrement('productQuantity', $cartItem->quantity);
+        
     }
 
     // 清空购物车
