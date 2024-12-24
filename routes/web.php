@@ -5,13 +5,12 @@ use App\Http\Controllers\productController;
 use App\Http\Controllers\updateStatusController;
 use  App\Http\Controllers\cartController;
 use  App\Http\Controllers\OrderController;
+use  App\Http\Controllers\welcomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
+Route::get('/', [App\Http\Controllers\welcomeController::class, 'homePage'])->name('welcome');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
