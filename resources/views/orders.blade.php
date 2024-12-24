@@ -13,7 +13,7 @@
 }
 
     </style>
-<div class="container">
+<div class="container py-4 pb-0">
     <h1>My Orders</h1>
 
     @if ($orders->isEmpty())

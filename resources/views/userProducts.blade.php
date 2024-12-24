@@ -55,15 +55,15 @@
         margin-bottom: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border: none;
-        height: 100%; 
+        height: 100%;
     }
 
     .card-img-top {
-    width: 100%;
-    height: 150px; 
-    object-fit: cover;
-    border-radius: 8px; 
-}
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 
 
     .card-body {
@@ -73,7 +73,7 @@
 </style>
 
 @if(!auth()->user()->is_admin)
-<div class="container">
+<div class="container py-4 pb-0">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
