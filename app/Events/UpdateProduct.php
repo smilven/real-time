@@ -3,12 +3,12 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class ProductQuantityUpdated implements ShouldBroadcastNow
+class ProductUpdate implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -31,7 +31,7 @@ class ProductQuantityUpdated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('products'); // 广播到 'products' 频道
+        return new Channel("products");
     }
 
     /**
@@ -41,7 +41,7 @@ class ProductQuantityUpdated implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'update'; // 自定义广播事件名称
+        return "update";
     }
 
     /**
@@ -52,12 +52,12 @@ class ProductQuantityUpdated implements ShouldBroadcastNow
     public function broadcastWith()
     {
         return [
-            'message' => "[{$this->product->updated_at}] Product '{$this->product->productName}' was updated successfully!",
-            'product' => [
-                'id' => $this->product->id,
-                'name' => $this->product->productName,
-                'price' => $this->product->productPrice,
-                'quantity' => $this->product->productQuantity
+            "message" => "[{$this->product->updated_at}] Product '{$this->product->productName}' was updated successfully!",
+            "product" => [
+                "id" => $this->product->id,
+                "name" => $this->product->productName,
+                "price" => $this->product->productPrice,
+                "quantity" => $this->product->productQuantity
             ]
         ];
     }
