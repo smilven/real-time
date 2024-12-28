@@ -61,7 +61,7 @@
     .card-img-top {
         width: 100%;
         height: 150px;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: 8px;
     }
 
@@ -87,43 +87,45 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Products</div>
-                <div class="card-body">
-                    <div id="notification"></div>
-                    <div class="row">
-                        @foreach($products as $product)
-                        <div class="col-md-3 mb-3">
-                            <div class="card" data-id="{{ $product->id }}">
-                                <img src="{{ $product->productImage ? asset('storage/' . $product->productImage) : 'https://via.placeholder.com/150' }}" class="card-img-top" alt="{{ $product->productName }}">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">{{ $product->productName }}</h5>
-                                    <p class="card-text">
-                                        <strong>Price: </strong> RM{{ number_format($product->productPrice, 2) }}<br>
-                                        <strong>Stock: </strong> <span class="product-quantity">{{ $product->productQuantity }}</span><br>
-                                    </p>
-                                    @if($product->productQuantity <= 0)
-                                        <div class="out-of-stock">Out of Stock</div>
-                                    @endif
-                                    <div class="justify-content-between align-items-center">
-                                        <button class="btn btn-primary add-to-cart" data-id="{{ $product->id }}" @if($product->productQuantity <= 0) disabled @endif>
-                                            Add to Cart
-                                        </button>
-                                    </div>
+                <div class="card-header d-flex justify-content-between align-items-center" style="font-weight: bold; font-size: 24px;">
+                    <span>Products</span>
+                    <input type="text" id="search-input" class="form-control w-25" placeholder="Search Products...">
+                </div>
+                <div id="notification"></div>
+                <div class="row" id="product-list">
+                    @foreach($products as $product)
+                    <div class="col-md-3 mb-3 product-item" data-name="{{ strtolower($product->productName) }}">
+                        <div class="card" data-id="{{ $product->id }}">
+                            <img src="{{ $product->productImage ? asset('storage/' . $product->productImage) : 'https://via.placeholder.com/150' }}" class="card-img-top" alt="{{ $product->productName }}">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">{{ $product->productName }}</h5>
+                                <p class="card-text">
+                                    <strong>Price: </strong> RM{{ number_format($product->productPrice, 2) }}<br>
+                                    <strong>Stock: </strong> <span class="product-quantity">{{ $product->productQuantity }}</span><br>
+                                </p>
+                                @if($product->productQuantity <= 0)
+                                    <div class="out-of-stock">Out of Stock</div>
+                                @endif
+                                <div class="justify-content-between align-items-center">
+                                    <button class="btn btn-primary add-to-cart" data-id="{{ $product->id }}" @if($product->productQuantity <= 0) disabled @endif>
+                                        Add to Cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
                     </div>
-                    <div class="mt-3 d-flex justify-content-center">
-                        {{ $products->links() }}
-                    </div>
-
+                    @endforeach
+                </div>
+                <div class="mt-3 d-flex justify-content-center">
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @endif
+
 @endsection
 @section("script")
 <script type="module">
@@ -230,6 +232,20 @@
                 alert(error.message || 'Unable to add product to cart.');
             });
         }
+    });
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const products = document.querySelectorAll('.product-item');
+
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name');
+            if (productName.includes(searchTerm)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
     });
 </script>
 
