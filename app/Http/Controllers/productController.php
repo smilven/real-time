@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\product;
+use App\Models\Cart;
+
 use App\Events\ProductCreate;
 use App\Events\ProductQuantityUpdated;
 
@@ -27,8 +29,9 @@ class productController extends Controller
     $products = product::when($search, function($query, $search) {
         return $query->where('productName', 'like', '%' . $search . '%');
     })->paginate(8);
-
-    return view('userProducts', compact('products', 'search'));
+    $userId = auth()->id();
+    $totalQuantity = Cart::where('user_id', $userId)->sum('quantity'); 
+    return view('userProducts', compact('products', 'search','totalQuantity'));
 }
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Events\OrderStatusUpdated;
+use App\Models\Cart;
 
 class OrderController extends Controller
 {
@@ -15,10 +16,12 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())->with('items.product')->latest()->get();
-
-        return view('orders', ['orders' => $orders]);
+        $userId = auth()->id();
+        $orders = Order::where('user_id', $userId)->with('items.product')->latest()->get();
+        $totalQuantity = Cart::where('user_id', $userId)->sum('quantity');
+                return view('orders', compact('orders', 'totalQuantity'));
     }
+    
      // Admin Dashboard to view all orders
      public function adminIndex()
      {

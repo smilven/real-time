@@ -151,6 +151,18 @@
             notification.insertAdjacentHTML('beforeend', `<div class="alert alert-success">${e.message}</div>`);
         }
     });
+    
+const userId = @json(auth()->id()); // 获取当前用户的 ID
+
+Echo.private('cart-updates.' + userId)
+    .listen('CartUpdated', (event) => {
+        console.log('Cart Updated:', event);
+        document.getElementById('cart-badge').innerText = event.totalQuantity;
+    });
+
+
+
+
 
     window.Echo.channel("products")
     .listen(".addToCart", (e) => {

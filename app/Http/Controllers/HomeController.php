@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\product;
+use App\Models\Cart;
 class HomeController extends Controller
 {
     /**
@@ -24,7 +25,9 @@ class HomeController extends Controller
     public function index()
     {
         $products = product::latest()->get();
-        return view('home',compact('products'));
+        $userId = auth()->id();
+        $totalQuantity = Cart::where('user_id', $userId)->sum('quantity');
+        return view('home',compact('products','totalQuantity'));
     }
   
     

@@ -44,9 +44,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="userProducts" >Product</a>
                         </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="myCart">My Cart</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="myCart">
+                                My Cart
+                                <span class="badge bg-danger" id="cart-badge" style="position: relative; top: -10px; left: 5px;">
+                                    {{ $totalQuantity ?? 0 }}
+                                </span>
+                            </a>
+                        </li>
+                        
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('orders.index') }}">My Orders</a>
                             </li>                            

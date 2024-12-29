@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Product;
 use App\Models\Cart;
-use App\Events\ProductAddedToCart; // 导入新事件
+use App\Events\ProductAddedToCart; 
+use App\Events\CartUpdated;
 
 class CartController extends Controller
 {
@@ -17,43 +18,52 @@ class CartController extends Controller
 
 
     public function myCartIndex(){
+        $userId = auth()->id();
         $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
-        return view ("myCart",compact('cartItems'));
+        $totalQuantity = Cart::where('user_id', $userId)->sum('quantity'); 
+        return view ("myCart",compact('cartItems','totalQuantity'));
     }
 
     public function addToCart(Request $request)
-{
-    $productId = $request->input('productId');
-    $product = Product::find($productId);
-
-    if (!$product || $product->productQuantity <= 0) {
-        return response()->json(['message' => 'Product is out of stock'], 400);
-    }
-
-    $userId = auth()->id();
-
-    // 减少库存
-    $product->productQuantity -= 1;
-    $product->save();
+    {
+        $productId = $request->input('productId');
+        $product = Product::find($productId);
     
-    event(new ProductAddedToCart($product)); // 通知管理员库存更新
-
-    // 添加到购物车表
-    $cartItem = \App\Models\Cart::where('user_id', $userId)->where('product_id', $productId)->first();
-
-    if ($cartItem) {
-        $cartItem->quantity += 1;
-        $cartItem->save();
-    } else {
-        \App\Models\Cart::create([
-            'user_id' => $userId,
-            'product_id' => $productId,
-            'quantity' => 1,
-        ]);
+        if (!$product || $product->productQuantity <= 0) {
+            return response()->json(['message' => 'Product is out of stock'], 400);
+        }
+    
+        $userId = auth()->id();
+    
+        // Reduce product stock
+        $product->productQuantity -= 1;
+        $product->save();
+        
+        event(new ProductAddedToCart($product)); // Notify admin about stock update
+    
+        // Add or update the cart item
+        $cartItem = Cart::where('user_id', $userId)->where('product_id', $productId)->first();
+    
+        if ($cartItem) {
+            $cartItem->quantity += 1;
+            $cartItem->save();
+        } else {
+            Cart::create([
+                'user_id' => $userId,
+                'product_id' => $productId,
+                'quantity' => 1,
+            ]);
+        }
+    
+        // Get the total quantity for the current user
+        $totalQuantity = Cart::where('user_id', $userId)->sum('quantity');
+    
+        // Store in session and broadcast event
+        Session::put('cart_total_quantity', $totalQuantity);
+        event(new CartUpdated($userId, $totalQuantity));
+    
+        return response()->json(['message' => 'Product added to cart!']);
     }
-
-    return response()->json(['message' => 'Product added to cart!']);
-}
 
 public function placeOrder()
 {
@@ -85,7 +95,7 @@ public function placeOrder()
     // 清空购物车
     \App\Models\Cart::where('user_id', $userId)->delete();
 
-    return redirect()->route('my.cart')->with('success', 'Order placed successfully!');
+    return redirect()->route('myCart.index')->with('success', 'Order placed successfully!');
 }
 
 
