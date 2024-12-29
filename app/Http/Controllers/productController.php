@@ -9,16 +9,28 @@ use App\Events\ProductCreate;
 use App\Events\ProductQuantityUpdated;
 
 class productController extends Controller
-{
+{    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(){
         $products = product::latest()->get();
         return view ("products",compact('products'));
     }
-    public function userIndex(){
-        $products = product::latest()->get();
-        $products = product::paginate(8);
-        return view ("userProducts",compact('products'));
-    }
+    
+ public function userIndex(Request $request) {
+    $search = $request->input('search', ''); // 获取搜索关键词
+
+    // 查询商品，根据是否有搜索词来筛选
+    $products = product::when($search, function($query, $search) {
+        return $query->where('productName', 'like', '%' . $search . '%');
+    })->paginate(8);
+
+    return view('userProducts', compact('products', 'search'));
+}
+
 
     
     public function store(Request $request)

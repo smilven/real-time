@@ -21,10 +21,8 @@ Route::delete('products/{id}', [ProductController::class, 'destroy'])->name('pro
 Route::get("/updateStatus",[updateStatusController::class,"index"])->name("productUpdate");
 Route::post("products",[productController::class,"store"])->name("products.store");
 Route::post('/cart/addToCart', [CartController::class, 'addToCart'])->name('addToCart.add');
-Route::get('/myCart', function () {
-    $cartItems = \App\Models\Cart::with('product')->where('user_id', auth()->id())->get();
-    return view('myCart', compact('cartItems'));
-})->name('my.cart');
+
+Route::get("myCart",[CartController::class,"myCartIndex"])->name("myCart.index");
 
 Route::post('/place-order', [CartController::class, 'placeOrder'])->name('place.order');
 

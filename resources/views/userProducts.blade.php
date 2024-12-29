@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 <style>
     .alert {
         position: relative;
@@ -80,6 +82,12 @@
         border-radius: 5px;
         font-size: 1.2rem;
     }
+    .custom-link {
+        color: black;       
+        font-weight: bold;   
+        text-decoration: none;
+    }
+
 </style>
 
 @if(!auth()->user()->is_admin)
@@ -88,8 +96,14 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center" style="font-weight: bold; font-size: 24px;">
-                    <span>Products</span>
-                    <input type="text" id="search-input" class="form-control w-25" placeholder="Search Products...">
+                    <span><a href="userProducts" class="custom-link">Products</a></span>
+                    <form method="GET" action="{{ url('userProducts') }}" class="position-relative">
+                        <input type="text" name="search" class="form-control w-150 pl-5" placeholder="Search Products..." value="{{ $search }}">
+                        <!-- 放大镜图标 -->
+                        <button type="submit" class="btn btn-link position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); padding: 0;">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </form>
                 </div>
                 <div id="notification"></div>
                 <div class="row" id="product-list">
@@ -117,12 +131,13 @@
                     @endforeach
                 </div>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $products->links() }}
+                    {{ $products->appends(['search' => $search])->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @endif
 
@@ -234,19 +249,9 @@
         }
     });
 
-    document.getElementById('search-input').addEventListener('input', function () {
-        const searchTerm = this.value.toLowerCase();
-        const products = document.querySelectorAll('.product-item');
 
-        products.forEach(product => {
-            const productName = product.getAttribute('data-name');
-            if (productName.includes(searchTerm)) {
-                product.style.display = 'block';
-            } else {
-                product.style.display = 'none';
-            }
-        });
-    });
 </script>
 
 @endsection
+
+

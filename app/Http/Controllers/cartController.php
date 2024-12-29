@@ -5,10 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Product;
+use App\Models\Cart;
 use App\Events\ProductAddedToCart; // 导入新事件
 
 class CartController extends Controller
 {
+        public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+    public function myCartIndex(){
+        $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
+        return view ("myCart",compact('cartItems'));
+    }
+
     public function addToCart(Request $request)
 {
     $productId = $request->input('productId');
