@@ -180,8 +180,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div data-mdb-input-init class="form-outline form-white">
-                                        <input type="password" class="form-control form-control-lg" autocomplete="off"
-                                            placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
+                                        <input type="text" class="form-control form-control-lg" autocomplete="off"
+                                            placeholder="Cvv" size="1" minlength="3" maxlength="3" />
                                         <label class="form-label" for="typeText">Cvv</label>
                                     </div>
                                 </div>
@@ -231,7 +231,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function updateQuantity(productId, change) {
         const input = event.target.parentElement.querySelector('.quantity-input');
