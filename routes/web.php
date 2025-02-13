@@ -12,6 +12,7 @@ use App\Http\Controllers\adminSettingController;
 use Maatwebsite\Excel\Facades\Excel;
 
 Auth::routes();
+git checkout feature-branch
 
 Route::get('/', [App\Http\Controllers\welfcomeController::class, 'homePage'])->name('welcome');
 
