@@ -82,8 +82,10 @@ public function placeOrder()
 
     // 添加订单项并更新库存
     foreach ($cartItems as $cartItem) {
+        
         \App\Models\OrderItem::create([
             'order_id' => $order->id,
+            'user_id' => $order->user_id,
             'product_id' => $cartItem->product_id,
             'quantity' => $cartItem->quantity,
             'price' => $cartItem->product->productPrice,

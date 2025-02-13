@@ -15,7 +15,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     @yield("script")
 </head>
 <body>
@@ -58,10 +58,16 @@
                             </li>                            
                         @else
                         <li class="nav-item">
-                            <a class="nav-link" href="products" >Add Product</a>
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}" >Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"href="{{ route('products.index') }}">Manage Product</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.orders') }}">Manage Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.setting') }}">Setting</a>
                         </li>
                         @endif
 

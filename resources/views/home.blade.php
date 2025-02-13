@@ -24,6 +24,7 @@
     
     .featured-category img {
         height: 250px;
+        margin-top:15px;
         object-fit: contain;
     }
     .card {
@@ -92,12 +93,15 @@
     margin-bottom: 2rem !important;
 }
 </style>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-<header class="bg-dark py-5"
-    style="background-image: url('/storage/product_images/banner.png'); background-size: cover; background-position: center; background-repeat: no-repeat; height:450px">
-    <div class="container px-4 px-lg-5 my-5">
-    </div>
+<header>
+    @if($bannerImage)
+        <img src="{{ asset('storage/' . $bannerImage->value) }}" alt="Banner Image" class="img-fluid banner-img"
+         style="background-size:contain; background-position: center; background-repeat: no-repeat; height:450px;"
+        >
+    @else
+        <p>No banner image available.</p>
+    @endif
 </header>
 
 <section>
@@ -172,8 +176,13 @@
 
 <section>
     <div class="container px-4 px-lg-5 mt-50">
-        <div class="py-5 px-8 rounded banner">
-            <img src="/storage/product_images/whyChooseUs.png" alt="Why Choose Us" class="banner-img">
+        <div class="py-5 px-8 rounded middle-banner">
+        
+            @if($middleBannerImage)
+        <img src="{{ asset('storage/' . $middleBannerImage->value) }}" alt="Middle Banner Image" class="img-fluid mb-3 banner-img">
+    @else
+        <p>No middle banner image set.</p>
+    @endif
         </div>
     </div>
 </section>
@@ -225,57 +234,59 @@
 
 
 
+
 <section>
-    <section>
-        <div class="container px-4 px-lg-5">
-            <div class="row">
-                <div class="col-12 col-md-6 mb-3 mb-lg-0">
-                    <div class="py-5 px-8 rounded"
-                        style="background: url(/storage/product_images/baneer4.png) no-repeat; background-size: cover; background-position: center; padding:15px;">
-                        <h3 class="fw-bold mb-1">最火泡面</h3>
-                        <p class="mb-4">
-                            全网
-                            <span class="fw-bold">最低</span>
-                            价钱
-                        </p>
-                        @auth
-                        @if(auth()->user()->is_admin)
-                        <div class=""><a class="btn btn-outline-dark mt-auto" href="products">View More</a></div>
-                        @else
-                        <div class=""><a class="btn btn-outline-dark mt-auto" href="userProducts">View More</a></div>
-                        @endif
+    <div class="container px-4 px-lg-5">
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3 mb-lg-0">
+                <div class="py-5 px-8 rounded bottom-banner-left"
+                    style="background: url({{ $bottomBannerLeftImage ? asset('storage/' . $bottomBannerLeftImage->value) : '/default/path/to/image.png' }}) no-repeat; background-size: cover; background-position: center; padding:15px;">
+                    <h3 class="fw-bold mb-1">最火泡面</h3>
+                    <p class="mb-4">
+                        全网
+                        <span class="fw-bold">最低</span>
+                        价钱
+                    </p>
+                    @auth
+                    @if(auth()->user()->is_admin)
+                    <div class=""><a class="btn btn-outline-dark mt-auto" href="products">View More</a></div>
                     @else
-                        <div class="t"><a class="btn btn-outline-dark mt-auto" href="{{ route('login') }}">Login to View More</a></div>
-                    @endauth                    </div>
+                    <div class=""><a class="btn btn-outline-dark mt-auto" href="userProducts">View More</a></div>
+                    @endif
+                    @else
+                    <div class="t"><a class="btn btn-outline-dark mt-auto" href="{{ route('login') }}">Login to View More</a></div>
+                    @endauth
                 </div>
-                <div class="col-12 col-md-6">
-                    <div>
-                        <div class="py-5 px-8 rounded"
-                            style="background: url(storage/product_images/banner3.png) no-repeat; background-size: cover; background-position: center;padding:15px;">
-                            <div>
-                                <h3 class="fw-bold mb-1">爆款零食</h3>
-                                <p class="mb-4">
-                                    全网
-                                    <span class="fw-bold">最低</span>
-                                    价钱
-                                </p>
-                                @auth
-                                @if(auth()->user()->is_admin)
-                                <div class=""><a class="btn btn-outline-dark mt-auto" href="products">View More</a></div>
-                                @else
-                                <div class=""><a class="btn btn-outline-dark mt-auto" href="userProducts">View More</a></div>
-                                @endif
+            </div>
+            <div class="col-12 col-md-6">
+                <div>
+                    <div class="py-5 px-8 rounded bottom-banner-right"
+                        style="background: url({{ $bottomBannerRightImage ? asset('storage/' . $bottomBannerRightImage->value) : '/default/path/to/image.png' }}) no-repeat; background-size: cover; background-position: center; padding:15px;">
+                        <div>
+                            <h3 class="fw-bold mb-1">爆款零食</h3>
+                            <p class="mb-4">
+                                全网
+                                <span class="fw-bold">最低</span>
+                                价钱
+                            </p>
+                            @auth
+                            @if(auth()->user()->is_admin)
+                            <div class=""><a class="btn btn-outline-dark mt-auto" href="products">View More</a></div>
                             @else
-                                <div class="t"><a class="btn btn-outline-dark mt-auto" href="{{ route('login') }}">Login to View More</a></div>
-                            @endauth                   
-                            </div>
+                            <div class=""><a class="btn btn-outline-dark mt-auto" href="userProducts">View More</a></div>
+                            @endif
+                            @else
+                            <div class="t"><a class="btn btn-outline-dark mt-auto" href="{{ route('login') }}">Login to View More</a></div>
+                            @endauth
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </section>
+
+
 
 <div class="container my-5 px-4 px-lg-5 mt-5">
     <div class="row text-center">
