@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Facades\Excel;
 Auth::routes();
 git checkout feature-branch
 
-Route::get('/', [App\Http\Controllers\welfcomeController::class, 'homePage'])->name('welcome');
+Route::get('/', [App\Http\Controllers\welcomeController::class, 'homePage'])->name('welcome');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
